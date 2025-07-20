@@ -144,15 +144,33 @@ footer a:hover {
     }
 
     header nav {
-        margin-top: 1rem;
+        display: flex;           /* Gunakan Flexbox */
+        flex-direction: row;     /* Tata letak horizontal */
+        justify-content: center; /* Rata tengah */
+        gap: 1rem;              /* Jarak antar link */
+        margin-top: 1rem;        /* Jarak dari logo */
     }
 
     header nav a {
-        display: block;
-        margin: 0.5rem 0;
+        display: inline-block; /* Pastikan link tetap inline dalam flex */
+        margin: 0;             /* Hapus margin bawaan */
     }
 
     main .max-w-md {
         margin: 0 1rem;
+    }
+}
+
+@media (min-width: 641px) {
+    /* Pastikan layout desktop tetap normal */
+    header .container {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    header nav {
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
     }
 }
