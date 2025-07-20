@@ -62,6 +62,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
+    // Fungsi untuk memformat angka dengan titik sebagai pemisah ribuan
+    function formatNumber(number) {
+        return number.toLocaleString('id-ID');
+    }
+
     // Muat mata uang saat halaman dimuat
     loadCurrencies();
 
@@ -92,7 +97,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             const data = await response.json();
             console.log('API Response (conversion):', data);
             if (data.rates && data.rates[to]) {
-                resultDiv.innerHTML = `${amount} ${from} = ${data.rates[to].toFixed(2)} ${to}`;
+                const convertedAmount = data.rates[to];
+                resultDiv.innerHTML = `${formatNumber(amount)} ${from} = ${formatNumber(convertedAmount.toFixed(2))} ${to}`;
             } else {
                 resultDiv.innerHTML = 'Conversion failed. Check if currencies are valid.';
             }
