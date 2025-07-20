@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vinnesia Currency Real-Time Converter</title>
+  <meta name="description" content="Convert global currencies in real-time using ExchangeRate.host API. Accurate and up-to-date exchange rates.">
+  <meta name="keywords" content="currency, exchange, converter, real-time, API, exchange rates, vinnesia">
+  <meta name="author" content="Vinnesia">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1 onclick="location.href='https://www.vinnesia.my.id'">Vinnesia Currency Real-Time Converter</h1>
+  </header>
+  <main>
+    <section id="converter">
+      <h2>Convert Your Currency</h2>
+      <form id="currency-form">
+        <input type="number" id="amount" placeholder="Amount" required />
+        <select id="from-currency"></select>
+        <select id="to-currency"></select>
+        <button type="submit">Convert</button>
+      </form>
+      <div id="result"></div>
+    </section>
+  </main>
+  <footer>
+    <a href="about.html">About</a> | 
+    <a href="terms.html">Terms</a> | 
+    <a href="privacy.html">Privacy</a> | 
+    <a href="blog.html">Blog</a>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>
