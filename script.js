@@ -4,12 +4,32 @@ document.addEventListener('DOMContentLoaded', async () => {
     const converterForm = document.getElementById('converter-form');
     const resultDiv = document.getElementById('result');
     const loadingDiv = document.getElementById('loading');
+    const amountInput = document.getElementById('amount');
 
-    if (!fromCurrency || !toCurrency || !converterForm || !resultDiv || !loadingDiv) {
-        console.error('DOM elements not found:', { fromCurrency, toCurrency, converterForm, resultDiv, loadingDiv });
+    if (!fromCurrency || !toCurrency || !converterForm || !resultDiv || !loadingDiv || !amountInput) {
+        console.error('DOM elements not found:', { fromCurrency, toCurrency, converterForm, resultDiv, loadingDiv, amountInput });
         resultDiv.innerHTML = 'Error: Page elements not loaded correctly. Please refresh or check code.';
         return;
     }
+
+    // Fungsi untuk memformat angka dengan titik sebagai pemisah ribuan
+    function formatNumber(number) {
+        // Hapus semua karakter non-angka kecuali titik desimal
+        const cleanNumber = number.replace(/[^0-9.]/g, '');
+        const num = parseFloat(cleanNumber) || 0;
+        return num.toLocaleString('id-ID');
+    }
+
+    // Fungsi untuk mendapatkan nilai angka murni dari input yang diformat
+    function getRawNumber(formattedNumber) {
+        return parseFloat(formattedNumber.replace(/\./g, '').replace(',', '.')) || '';
+    }
+
+    // Format input amount secara real-time
+    amountInput.addEventListener('input', function (e) {
+        const rawValue = getRawNumber(this.value);
+        this.value = formatNumber(rawValue);
+    });
 
     // Fungsi untuk memuat daftar mata uang dari Frankfurter dengan nama lengkap
     async function loadCurrencies() {
@@ -62,18 +82,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // Fungsi untuk memformat angka dengan titik sebagai pemisah ribuan
-    function formatNumber(number) {
-        return number.toLocaleString('id-ID');
-    }
-
     // Muat mata uang saat halaman dimuat
     loadCurrencies();
 
     // Handle form submission untuk konversi
     converterForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const amount = document.getElementById('amount').value;
+        const amount = getRawNumber(amountInput.value); // Ambil nilai angka murni
         const from = fromCurrency.value;
         const to = toCurrency.value;
 
@@ -104,7 +119,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         } catch (error) {
             console.error('Error converting currency:', error);
-            resultDiv.innerHTML = `Error: ${error.message}. Check console for details.`;
+            resultDiv.innerHTML = `Error: ${error.message}. Check console for details.';
         }
 
         // Sembunyikan loading spinner dan tampilkan hasil
