@@ -3,9 +3,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const toCurrency = document.getElementById('to-currency');
     const converterForm = document.getElementById('converter-form');
     const resultDiv = document.getElementById('result');
+    const loadingDiv = document.getElementById('loading');
 
-    if (!fromCurrency || !toCurrency || !converterForm || !resultDiv) {
-        console.error('DOM elements not found:', { fromCurrency, toCurrency, converterForm, resultDiv });
+    if (!fromCurrency || !toCurrency || !converterForm || !resultDiv || !loadingDiv) {
+        console.error('DOM elements not found:', { fromCurrency, toCurrency, converterForm, resultDiv, loadingDiv });
         resultDiv.innerHTML = 'Error: Page elements not loaded correctly. Please refresh or check code.';
         return;
     }
@@ -21,7 +22,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
             const data = await response.json();
             console.log('API Response (currencies):', data);
-            const currencies = Object.entries(data); // [ [code, name], ... ]
+            const currencies = Object.entries(data);
             if (currencies.length === 0) throw new Error('No currencies returned by API');
             fromCurrency.innerHTML = '<option value="">Select Currency</option>';
             toCurrency.innerHTML = '<option value="">Select Currency</option>';
@@ -73,8 +74,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (!amount || !from || !to) {
             resultDiv.innerHTML = 'Please fill in all fields.';
+            resultDiv.style.opacity = '1';
             return;
         }
+
+        // Tampilkan loading spinner
+        loadingDiv.classList.remove('hidden');
+        resultDiv.style.opacity = '0'; // Sembunyikan hasil sementara
 
         try {
             const response = await fetch(`https://api.frankfurter.app/latest?amount=${amount}&from=${from}&to=${to}`, {
@@ -94,5 +100,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             console.error('Error converting currency:', error);
             resultDiv.innerHTML = `Error: ${error.message}. Check console for details.`;
         }
+
+        // Sembunyikan loading spinner dan tampilkan hasil
+        loadingDiv.classList.add('hidden');
+        resultDiv.style.opacity = '1';
     });
 });
