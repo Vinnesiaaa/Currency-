@@ -2,11 +2,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     const fromCurrency = document.getElementById('from-currency');
     const toCurrency = document.getElementById('to-currency');
     const converterForm = document.getElementById('converter-form');
-    const resultDiv = document.getElementById('result');
+    const resultDiv = document.getElementById('amount'); // Perbaiki: Seharusnya 'result', bukan 'amount'
 
     if (!fromCurrency || !toCurrency || !converterForm || !resultDiv) {
-        console.error('One or more DOM elements not found:', { fromCurrency, toCurrency, converterForm, resultDiv });
-        resultDiv.innerHTML = 'Error: Page elements not loaded correctly. Please refresh.';
+        console.error('DOM elements not found:', { fromCurrency, toCurrency, converterForm, resultDiv });
+        document.getElementById('result').innerHTML = 'Error: Page elements not loaded correctly. Please refresh or check code.';
         return;
     }
 
@@ -14,12 +14,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     async function loadCurrencies() {
         try {
             const response = await fetch('https://api.frankfurter.app/currencies', {
-                mode: 'cors'
+                method: 'GET',
+                mode: 'cors',
+                cache: 'no-cache'
             });
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
             const data = await response.json();
-            console.log('Currencies fetched:', data);
+            console.log('API Response (currencies):', data);
             const currencies = Object.keys(data);
+            if (currencies.length === 0) throw new Error('No currencies returned by API');
             fromCurrency.innerHTML = '<option value="">Select Currency</option>';
             toCurrency.innerHTML = '<option value="">Select Currency</option>';
             currencies.forEach(currency => {
@@ -31,9 +34,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 toCurrency.appendChild(option2);
             });
         } catch (error) {
-            console.error('Error fetching currencies:', error);
-            resultDiv.innerHTML = 'Failed to load currency list. Check console for details.';
-            const fallbackCurrencies = ['USD', 'EUR', 'IDR', 'JPY', 'GBP', 'AUD', 'CAD', 'CHF', 'CNY', 'SGD'];
+            console.error('Error loading currencies:', error);
+            resultDiv.innerHTML = 'Failed to load currencies. Check console or try again later.';
+            const fallbackCurrencies = ['USD', 'EUR', 'IDR', 'JPY', 'GBP'];
             fromCurrency.innerHTML = '<option value="">Select Currency</option>';
             toCurrency.innerHTML = '<option value="">Select Currency</option>';
             fallbackCurrencies.forEach(currency => {
@@ -56,6 +59,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const amount = document.getElementById('amount').value;
         const from = fromCurrency.value;
         const to = toCurrency.value;
+        const resultDiv = document.getElementById('result'); // Pastikan elemen result
 
         if (!amount || !from || !to) {
             resultDiv.innerHTML = 'Please fill in all fields.';
@@ -64,19 +68,21 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         try {
             const response = await fetch(`https://api.frankfurter.app/latest?amount=${amount}&from=${from}&to=${to}`, {
-                mode: 'cors'
+                method: 'GET',
+                mode: 'cors',
+                cache: 'no-cache'
             });
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
             const data = await response.json();
-            console.log('Conversion data:', data);
+            console.log('API Response (conversion):', data);
             if (data.rates && data.rates[to]) {
                 resultDiv.innerHTML = `${amount} ${from} = ${data.rates[to].toFixed(2)} ${to}`;
             } else {
-                resultDiv.innerHTML = 'Conversion not available. Check selected currencies.';
+                resultDiv.innerHTML = 'Conversion failed. Check if currencies are valid.';
             }
         } catch (error) {
             console.error('Error converting currency:', error);
-            resultDiv.innerHTML = 'Error fetching conversion data. Check console for details.';
+            resultDiv.innerHTML = `Error: ${error.message}. Check console for details.`;
         }
     });
 });
