@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
-    // Fungsi untuk memuat daftar mata uang dari Frankfurter
+    // Fungsi untuk memuat daftar mata uang dari Frankfurter dengan nama lengkap
     async function loadCurrencies() {
         try {
             const response = await fetch('https://api.frankfurter.app/currencies', {
@@ -21,29 +21,40 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
             const data = await response.json();
             console.log('API Response (currencies):', data);
-            const currencies = Object.keys(data);
+            const currencies = Object.entries(data); // [ [code, name], ... ]
             if (currencies.length === 0) throw new Error('No currencies returned by API');
             fromCurrency.innerHTML = '<option value="">Select Currency</option>';
             toCurrency.innerHTML = '<option value="">Select Currency</option>';
-            currencies.forEach(currency => {
+            currencies.forEach(([code, name]) => {
                 const option1 = document.createElement('option');
                 const option2 = document.createElement('option');
-                option1.value = option2.value = currency;
-                option1.text = option2.text = currency;
+                option1.value = option2.value = code;
+                option1.text = option2.text = `${code} - ${name}`;
                 fromCurrency.appendChild(option1);
                 toCurrency.appendChild(option2);
             });
         } catch (error) {
             console.error('Error loading currencies:', error);
             resultDiv.innerHTML = 'Failed to load currencies. Check console or try again later.';
-            const fallbackCurrencies = ['USD', 'EUR', 'IDR', 'JPY', 'GBP', 'AUD', 'CAD', 'CHF', 'CNY', 'SGD'];
+            const fallbackCurrencies = {
+                'USD': 'United States Dollar',
+                'EUR': 'Euro',
+                'IDR': 'Indonesian Rupiah',
+                'JPY': 'Japanese Yen',
+                'GBP': 'British Pound',
+                'AUD': 'Australian Dollar',
+                'CAD': 'Canadian Dollar',
+                'CHF': 'Swiss Franc',
+                'CNY': 'Chinese Yuan',
+                'SGD': 'Singapore Dollar'
+            };
             fromCurrency.innerHTML = '<option value="">Select Currency</option>';
             toCurrency.innerHTML = '<option value="">Select Currency</option>';
-            fallbackCurrencies.forEach(currency => {
+            Object.entries(fallbackCurrencies).forEach(([code, name]) => {
                 const option1 = document.createElement('option');
                 const option2 = document.createElement('option');
-                option1.value = option2.value = currency;
-                option1.text = option2.text = currency;
+                option1.value = option2.value = code;
+                option1.text = option2.text = `${code} - ${name}`;
                 fromCurrency.appendChild(option1);
                 toCurrency.appendChild(option2);
             });
