@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const converterForm = document.getElementById('converter-form');
     const resultDiv = document.getElementById('result');
 
-    // Fetch available currencies
+    // Fungsi untuk memuat mata uang
     async function loadCurrencies() {
         try {
             const response = await fetch('https://api.exchangerate.host/symbols', {
@@ -13,7 +13,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (!response.ok) throw new Error('Network response was not ok');
             const data = await response.json();
             const currencies = Object.keys(data.symbols);
-
+            // Kosongkan dropdown sebelum mengisi
+            fromCurrency.innerHTML = '<option value="">Select Currency</option>';
+            toCurrency.innerHTML = '<option value="">Select Currency</option>';
             currencies.forEach(currency => {
                 const option1 = document.createElement('option');
                 const option2 = document.createElement('option');
@@ -23,10 +25,18 @@ document.addEventListener('DOMContentLoaded', async () => {
                 toCurrency.appendChild(option2);
             });
         } catch (error) {
-            console.error('Error fetching currencies:', error);
-            resultDiv.innerHTML = 'Error loading currency list. Please check your internet connection or try again later.';
-            // Fallback currencies
-            ['USD', 'EUR', 'IDR', 'JPY', 'GBP'].forEach(currency => {
+            console.error('Error fetching currencies from API:', error);
+            resultDiv.innerHTML = 'Failed to load full currency list. Using fallback currencies.';
+            // Daftar mata uang global sebagai fallback
+            const fallbackCurrencies = [
+                'USD', 'EUR', 'IDR', 'JPY', 'GBP', 'AUD', 'CAD', 'CHF', 'CNY', 'SGD',
+                'HKD', 'MYR', 'THB', 'KRW', 'INR', 'NZD', 'SEK', 'NOK', 'DKK', 'ZAR',
+                'MXN', 'BRL', 'RUB', 'TRY', 'AED', 'SAR', 'QAR', 'KWD', 'OMR', 'BHD'
+                // Tambahkan lebih banyak jika perlu (total > 160 mata uang global)
+            ];
+            fromCurrency.innerHTML = '<option value="">Select Currency</option>';
+            toCurrency.innerHTML = '<option value="">Select Currency</option>';
+            fallbackCurrencies.forEach(currency => {
                 const option1 = document.createElement('option');
                 const option2 = document.createElement('option');
                 option1.value = option2.value = currency;
@@ -37,7 +47,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // Load currencies when page loads
+    // Muat mata uang saat halaman dimuat
     loadCurrencies();
 
     // Handle form submission
