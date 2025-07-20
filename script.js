@@ -4,16 +4,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     const converterForm = document.getElementById('converter-form');
     const resultDiv = document.getElementById('result');
 
+    if (!fromCurrency || !toCurrency || !converterForm || !resultDiv) {
+        console.error('One or more DOM elements not found:', { fromCurrency, toCurrency, converterForm, resultDiv });
+        resultDiv.innerHTML = 'Error: Page elements not loaded correctly. Please refresh.';
+        return;
+    }
+
     // Fungsi untuk memuat daftar mata uang dari Frankfurter
     async function loadCurrencies() {
         try {
             const response = await fetch('https://api.frankfurter.app/currencies', {
                 mode: 'cors'
             });
-            if (!response.ok) throw new Error('Network response was not ok');
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             const data = await response.json();
+            console.log('Currencies fetched:', data);
             const currencies = Object.keys(data);
-            // Kosongkan dropdown sebelum mengisi
             fromCurrency.innerHTML = '<option value="">Select Currency</option>';
             toCurrency.innerHTML = '<option value="">Select Currency</option>';
             currencies.forEach(currency => {
@@ -25,9 +31,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 toCurrency.appendChild(option2);
             });
         } catch (error) {
-            console.error('Error fetching currencies from Frankfurter:', error);
-            resultDiv.innerHTML = 'Failed to load currency list. Using fallback currencies.';
-            // Fallback currencies jika API gagal
+            console.error('Error fetching currencies:', error);
+            resultDiv.innerHTML = 'Failed to load currency list. Check console for details.';
             const fallbackCurrencies = ['USD', 'EUR', 'IDR', 'JPY', 'GBP', 'AUD', 'CAD', 'CHF', 'CNY', 'SGD'];
             fromCurrency.innerHTML = '<option value="">Select Currency</option>';
             toCurrency.innerHTML = '<option value="">Select Currency</option>';
@@ -61,16 +66,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             const response = await fetch(`https://api.frankfurter.app/latest?amount=${amount}&from=${from}&to=${to}`, {
                 mode: 'cors'
             });
-            if (!response.ok) throw new Error('Network response was not ok');
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             const data = await response.json();
+            console.log('Conversion data:', data);
             if (data.rates && data.rates[to]) {
                 resultDiv.innerHTML = `${amount} ${from} = ${data.rates[to].toFixed(2)} ${to}`;
             } else {
-                resultDiv.innerHTML = 'Conversion not available for selected currencies.';
+                resultDiv.innerHTML = 'Conversion not available. Check selected currencies.';
             }
         } catch (error) {
             console.error('Error converting currency:', error);
-            resultDiv.innerHTML = 'Error fetching conversion data. Please try again later.';
+            resultDiv.innerHTML = 'Error fetching conversion data. Check console for details.';
         }
     });
 });
