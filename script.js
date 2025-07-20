@@ -2,11 +2,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     const fromCurrency = document.getElementById('from-currency');
     const toCurrency = document.getElementById('to-currency');
     const converterForm = document.getElementById('converter-form');
-    const resultDiv = document.getElementById('amount'); // Perbaiki: Seharusnya 'result', bukan 'amount'
+    const resultDiv = document.getElementById('result');
 
     if (!fromCurrency || !toCurrency || !converterForm || !resultDiv) {
         console.error('DOM elements not found:', { fromCurrency, toCurrency, converterForm, resultDiv });
-        document.getElementById('result').innerHTML = 'Error: Page elements not loaded correctly. Please refresh or check code.';
+        resultDiv.innerHTML = 'Error: Page elements not loaded correctly. Please refresh or check code.';
         return;
     }
 
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         } catch (error) {
             console.error('Error loading currencies:', error);
             resultDiv.innerHTML = 'Failed to load currencies. Check console or try again later.';
-            const fallbackCurrencies = ['USD', 'EUR', 'IDR', 'JPY', 'GBP'];
+            const fallbackCurrencies = ['USD', 'EUR', 'IDR', 'JPY', 'GBP', 'AUD', 'CAD', 'CHF', 'CNY', 'SGD'];
             fromCurrency.innerHTML = '<option value="">Select Currency</option>';
             toCurrency.innerHTML = '<option value="">Select Currency</option>';
             fallbackCurrencies.forEach(currency => {
@@ -59,7 +59,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         const amount = document.getElementById('amount').value;
         const from = fromCurrency.value;
         const to = toCurrency.value;
-        const resultDiv = document.getElementById('result'); // Pastikan elemen result
 
         if (!amount || !from || !to) {
             resultDiv.innerHTML = 'Please fill in all fields.';
