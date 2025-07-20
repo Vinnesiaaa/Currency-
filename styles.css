@@ -68,22 +68,44 @@ main .max-w-md {
     color: #ecc94b; /* Emas untuk label */
 }
 
-#converter-form select,
-#converter-form input {
+#converter-form .amount-input {
+    display: flex;
+    align-items: center;
+}
+
+#converter-form input,
+#converter-form select {
     width: 100%;
-    padding: 0.5rem;
+    padding: 0.75rem; /* Padding lebih besar */
     border-radius: 0.375rem;
     background-color: #2d3748; /* Hitam lebih gelap untuk input */
     border: 1px solid #4a5568;
     color: #ffffff;
-    transition: border-color 0.3s ease, background-color 0.3s ease;
+    font-size: 1.1rem; /* Ukuran font lebih besar */
+    transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-#converter-form select:focus,
-#converter-form input:focus {
+#converter-form input:focus,
+#converter-form select:focus {
     border-color: #ecc94b; /* Emas saat fokus */
     background-color: #2a3344;
     outline: none;
+    box-shadow: 0 0 5px rgba(234, 179, 8, 0.5); /* Efek glow */
+}
+
+#converter-form input.rounded-l-lg {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+#converter-form span {
+    background-color: #2d3748;
+    padding: 0.75rem;
+    border: 1px solid #4a5568;
+    border-left: none;
+    border-top-right-radius: 0.375rem;
+    border-bottom-right-radius: 0.375rem;
+    font-size: 1.1rem;
 }
 
 #converter-form button {
