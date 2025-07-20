@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     async function loadCurrencies() {
         try {
             const response = await fetch('https://api.exchangerate.host/symbols', {
-                mode: 'cors' // Menambahkan mode CORS untuk keamanan
+                mode: 'cors'
             });
             if (!response.ok) throw new Error('Network response was not ok');
             const data = await response.json();
@@ -25,8 +25,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         } catch (error) {
             console.error('Error fetching currencies:', error);
             resultDiv.innerHTML = 'Error loading currency list. Please check your internet connection or try again later.';
-            // Tambahkan opsi default jika API gagal
-            ['USD', 'EUR', 'IDR'].forEach(currency => {
+            // Fallback currencies
+            ['USD', 'EUR', 'IDR', 'JPY', 'GBP'].forEach(currency => {
                 const option1 = document.createElement('option');
                 const option2 = document.createElement('option');
                 option1.value = option2.value = currency;
