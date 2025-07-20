@@ -4,17 +4,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     const converterForm = document.getElementById('converter-form');
     const resultDiv = document.getElementById('result');
 
-    // Fungsi untuk memuat mata uang dari Frankfurter
+    // Fungsi untuk memuat daftar mata uang dari Frankfurter
     async function loadCurrencies() {
         try {
-            const response = await fetch('https://api.frankfurter.app/latest', {
+            const response = await fetch('https://api.frankfurter.app/currencies', {
                 mode: 'cors'
             });
             if (!response.ok) throw new Error('Network response was not ok');
             const data = await response.json();
-            const currencies = Object.keys(data.rates);
-            // Tambahkan base currency (EUR) ke daftar
-            currencies.unshift(data.base);
+            const currencies = Object.keys(data);
             // Kosongkan dropdown sebelum mengisi
             fromCurrency.innerHTML = '<option value="">Select Currency</option>';
             toCurrency.innerHTML = '<option value="">Select Currency</option>';
@@ -47,7 +45,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Muat mata uang saat halaman dimuat
     loadCurrencies();
 
-    // Handle form submission
+    // Handle form submission untuk konversi
     converterForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const amount = document.getElementById('amount').value;
@@ -60,10 +58,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         try {
-            const response = await fetch(`https://api.frankfurter.app/latest?from=${from}&to=${to}&amount=${amount}`, {
+            const response = await fetch(`https://api.frankfurter.app/latest?amount=${amount}&from=${from}&to=${to}`, {
                 mode: 'cors'
             });
-            if (!response.ok) throw new Error('Conversion failed');
+            if (!response.ok) throw new Error('Network response was not ok');
             const data = await response.json();
             if (data.rates && data.rates[to]) {
                 resultDiv.innerHTML = `${amount} ${from} = ${data.rates[to].toFixed(2)} ${to}`;
