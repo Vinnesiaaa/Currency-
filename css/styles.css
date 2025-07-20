@@ -1,0 +1,40 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #1a1a1a;
+    color: #ffffff;
+}
+
+header {
+    background: linear-gradient(90deg, #4B0082, #2c003e);
+}
+
+nav a {
+    transition: color 0.3s ease;
+}
+
+form input, form select {
+    background-color: #2d2d2d;
+    border: 1px solid #FFD700;
+}
+
+button {
+    transition: background-color 0.3s ease;
+}
+
+footer {
+    background: linear-gradient(90deg, #4B0082, #2c003e);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+    nav {
+        flex-direction: column;
+        space-y-2;
+    }
+    .max-w-md {
+        max-width: 100%;
+    }
+}
