@@ -4,15 +4,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     const converterForm = document.getElementById('converter-form');
     const resultDiv = document.getElementById('result');
 
-    // Fungsi untuk memuat mata uang
+    // Fungsi untuk memuat mata uang dari Frankfurter
     async function loadCurrencies() {
         try {
-            const response = await fetch('https://api.exchangerate.host/symbols', {
+            const response = await fetch('https://api.frankfurter.app/latest', {
                 mode: 'cors'
             });
             if (!response.ok) throw new Error('Network response was not ok');
             const data = await response.json();
-            const currencies = Object.keys(data.symbols);
+            const currencies = Object.keys(data.rates);
+            // Tambahkan base currency (EUR) ke daftar
+            currencies.unshift(data.base);
             // Kosongkan dropdown sebelum mengisi
             fromCurrency.innerHTML = '<option value="">Select Currency</option>';
             toCurrency.innerHTML = '<option value="">Select Currency</option>';
@@ -25,15 +27,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 toCurrency.appendChild(option2);
             });
         } catch (error) {
-            console.error('Error fetching currencies from API:', error);
-            resultDiv.innerHTML = 'Failed to load full currency list. Using fallback currencies.';
-            // Daftar mata uang global sebagai fallback
-            const fallbackCurrencies = [
-                'USD', 'EUR', 'IDR', 'JPY', 'GBP', 'AUD', 'CAD', 'CHF', 'CNY', 'SGD',
-                'HKD', 'MYR', 'THB', 'KRW', 'INR', 'NZD', 'SEK', 'NOK', 'DKK', 'ZAR',
-                'MXN', 'BRL', 'RUB', 'TRY', 'AED', 'SAR', 'QAR', 'KWD', 'OMR', 'BHD'
-                // Tambahkan lebih banyak jika perlu (total > 160 mata uang global)
-            ];
+            console.error('Error fetching currencies from Frankfurter:', error);
+            resultDiv.innerHTML = 'Failed to load currency list. Using fallback currencies.';
+            // Fallback currencies jika API gagal
+            const fallbackCurrencies = ['USD', 'EUR', 'IDR', 'JPY', 'GBP', 'AUD', 'CAD', 'CHF', 'CNY', 'SGD'];
             fromCurrency.innerHTML = '<option value="">Select Currency</option>';
             toCurrency.innerHTML = '<option value="">Select Currency</option>';
             fallbackCurrencies.forEach(currency => {
@@ -63,15 +60,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         try {
-            const response = await fetch(`https://api.exchangerate.host/convert?from=${from}&to=${to}&amount=${amount}`, {
+            const response = await fetch(`https://api.frankfurter.app/latest?from=${from}&to=${to}&amount=${amount}`, {
                 mode: 'cors'
             });
             if (!response.ok) throw new Error('Conversion failed');
             const data = await response.json();
-            if (data.result) {
-                resultDiv.innerHTML = `${amount} ${from} = ${data.result.toFixed(2)} ${to}`;
+            if (data.rates && data.rates[to]) {
+                resultDiv.innerHTML = `${amount} ${from} = ${data.rates[to].toFixed(2)} ${to}`;
             } else {
-                resultDiv.innerHTML = 'Error fetching conversion data.';
+                resultDiv.innerHTML = 'Conversion not available for selected currencies.';
             }
         } catch (error) {
             console.error('Error converting currency:', error);
