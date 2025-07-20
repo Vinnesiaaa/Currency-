@@ -34,8 +34,32 @@
     </header>
 
     <main class="container mx-auto px-4 py-10">
-        <h1 class="text-4xl font-bold text-center text-yellow-400 mb-8">Real-Time Currency Converter</h1>
+        <!-- Hero Section dengan Gambar Mata Uang -->
+        <section class="text-center mb-10">
+            <img src="/assets/og-image.jpg" alt="Currency Exchange" class="mx-auto mb-4 w-48 h-auto rounded-lg animate-fadeIn">
+            <h2 class="text-3xl font-bold text-yellow-400 mb-2">Convert Currencies Instantly!</h2>
+            <p class="text-gray-300 mb-4">Real-time rates for all your currency needs.</p>
+        </section>
+
+        <!-- Highlight Fitur (Card) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            <div class="bg-purple-800 p-4 rounded-lg shadow-lg text-center animate-fadeIn">
+                <h3 class="text-yellow-400 font-bold">Real-Time Updates</h3>
+                <p class="text-gray-400">Get the latest exchange rates instantly.</p>
+            </div>
+            <div class="bg-purple-800 p-4 rounded-lg shadow-lg text-center animate-fadeIn">
+                <h3 class="text-yellow-400 font-bold">Free to Use</h3>
+                <p class="text-gray-400">No hidden fees, completely free!</p>
+            </div>
+            <div class="bg-purple-800 p-4 rounded-lg shadow-lg text-center animate-fadeIn">
+                <h3 class="text-yellow-400 font-bold">Easy to Use</h3>
+                <p class="text-gray-400">Simple interface for everyone.</p>
+            </div>
+        </div>
+
+        <!-- Converter Section -->
         <div class="max-w-md mx-auto bg-purple-800 p-6 rounded-lg shadow-lg">
+            <p class="text-sm text-gray-400 mb-4 text-center">Enter amount and select currencies to convert.</p>
             <form id="converter-form">
                 <div class="mb-4">
                     <label for="amount" class="block text-yellow-300">Amount</label>
@@ -53,15 +77,23 @@
                         <option value="">Select Currency</option>
                     </select>
                 </div>
-                <button type="submit" class="w-full bg-yellow-400 text-gray-900 py-2 rounded hover:bg-yellow-500 transition duration-200">Convert</button>
+                <button type="submit" class="w-full bg-yellow-400 text-gray-900 py-2 rounded hover:bg-yellow-500 transition duration-200 transform hover:scale-105">Convert</button>
             </form>
-            <div id="result" class="mt-4 text-center text-yellow-300"></div>
+            <div id="loading" class="hidden mt-4 text-center text-yellow-300">Loading...</div>
+            <div id="result" class="mt-4 text-center text-yellow-300 transition-opacity duration-500 opacity-0"></div>
         </div>
+
+        <!-- Testimoni -->
+        <div class="text-center mt-10 text-gray-400">"Very helpful for my travels! - HappyUser"</div>
     </main>
 
     <footer class="bg-purple-900 py-4">
         <div class="container mx-auto px-4 text-center">
             <p class="text-yellow-300">Contact us: <a href="mailto:vin.nesiaa.id@gmail.com" class="underline">vin.nesiaa.id@gmail.com</a> | Follow us: <a href="https://www.instagram.com/vin.nesia.id" class="underline">Instagram</a></p>
+            <div class="mt-2 flex justify-center space-x-4">
+                <a href="https://www.facebook.com" class="text-yellow-300 hover:text-yellow-500">Facebook</a>
+                <a href="https://www.twitter.com" class="text-yellow-300 hover:text-yellow-500">Twitter</a>
+            </div>
             <p class="text-gray-400 mt-2">© 2025 Vinnesia Currency Real-Time Converter</p>
         </div>
     </footer>
