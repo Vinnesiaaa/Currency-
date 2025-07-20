@@ -1,37 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Vinnesia Currency Real-Time Converter</title>
-  <meta name="description" content="Convert global currencies in real-time using ExchangeRate.host API. Accurate and up-to-date exchange rates.">
-  <meta name="keywords" content="currency, exchange, converter, real-time, API, exchange rates, vinnesia">
-  <meta name="author" content="Vinnesia">
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Vinnesia Currency Real-Time Converter - Convert currencies instantly with accurate exchange rates.">
+    <meta name="keywords" content="currency converter, exchange rates, real-time converter, Vinnesia">
+    <meta name="author" content="Vinnesia">
+    <meta property="og:title" content="Vinnesia Currency Real-Time Converter">
+    <meta property="og:description" content="Convert currencies with real-time exchange rates using Vinnesia Currency Converter.">
+    <meta property="og:url" content="https://currency.vinnesia.my.id">
+    <meta property="og:image" content="https://currency.vinnesia.my.id/assets/og-image.jpg">
+    <title>Vinnesia Currency Real-Time Converter</title>
+    <link rel="icon" type="image/png" href="/assets/favicon.png">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-  <header>
-    <h1 onclick="location.href='https://www.vinnesia.my.id'">Vinnesia Currency Real-Time Converter</h1>
-  </header>
-  <main>
-    <section id="converter">
-      <h2>Convert Your Currency</h2>
-      <form id="currency-form">
-        <input type="number" id="amount" placeholder="Amount" required />
-        <select id="from-currency"></select>
-        <select id="to-currency"></select>
-        <button type="submit">Convert</button>
-      </form>
-      <div id="result"></div>
-    </section>
-  </main>
-  <footer>
-    <a href="about.html">About</a> | 
-    <a href="terms.html">Terms</a> | 
-    <a href="privacy.html">Privacy</a> | 
-    <a href="blog.html">Blog</a>
-  </footer>
-  <script src="script.js"></script>
+<body class="bg-gray-900 text-white">
+    <!-- Header -->
+    <header class="bg-purple-900 py-4 shadow-md">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <a href="https://www.vinnesia.my.id" class="text-2xl font-bold text-yellow-400">Vinnesia Currency</a>
+            <nav class="space-x-4">
+                <a href="/" class="text-yellow-300 hover:text-yellow-500">Home</a>
+                <a href="/about" class="text-yellow-300 hover:text-yellow-500">About</a>
+                <a href="/terms" class="text-yellow-300 hover:text-yellow-500">Terms</a>
+                <a href="/privacy" class="text-yellow-300 hover:text-yellow-500">Privacy</a>
+                <a href="/blog" class="text-yellow-300 hover:text-yellow-500">Blog</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-10">
+        <h1 class="text-4xl font-bold text-center text-yellow-400 mb-8">Real-Time Currency Converter</h1>
+        <div class="max-w-md mx-auto bg-purple-800 p-6 rounded-lg shadow-lg">
+            <form id="converter-form">
+                <div class="mb-4">
+                    <label for="amount" class="block text-yellow-300">Amount</label>
+                    <input type="number" id="amount" class="w-full p-2 rounded bg-gray-800 text-white" placeholder="Enter amount" required>
+                </div>
+                <div class="mb-4">
+                    <label for="from-currency" class="block text-yellow-300">From</label>
+                    <select id="from-currency" class="w-full p-2 rounded bg-gray-800 text-white" required></select>
+                </div>
+                <div class="mb-4">
+                    <label for="to-currency" class="block text-yellow-300">To</label>
+                    <select id="to-currency" class="w-full p-2 rounded bg-gray-800 text-white" required></select>
+                </div>
+                <button type="submit" class="w-full bg-yellow-400 text-gray-900 py-2 rounded hover:bg-yellow-500">Convert</button>
+            </form>
+            <div id="result" class="mt-4 text-center text-yellow-300"></div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-purple-900 py-4">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-yellow-300">Contact us: <a href="mailto:vin.nesiaa.id@gmail.com" class="underline">vin.nesiaa.id@gmail.com</a> | Follow us: <a href="https://www.instagram.com/vin.nesia.id" class="underline">Instagram</a></p>
+            <p class="text-gray-400 mt-2">&copy; 2025 Vinnesia Currency Real-Time Converter</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
