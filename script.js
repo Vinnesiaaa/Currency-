@@ -3,10 +3,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const toCurrency = document.getElementById('to-currency');
     const converterForm = document.getElementById('converter-form');
     const resultDiv = document.getElementById('result');
-    const contentDiv = document.getElementById('content');
 
-    if (!fromCurrency || !toCurrency || !converterForm || !resultDiv || !contentDiv) {
-        console.error('DOM elements not found:', { fromCurrency, toCurrency, converterForm, resultDiv, contentDiv });
+    if (!fromCurrency || !toCurrency || !converterForm || !resultDiv) {
+        console.error('DOM elements not found:', { fromCurrency, toCurrency, converterForm, resultDiv });
         resultDiv.innerHTML = 'Error: Page elements not loaded correctly. Please refresh or check code.';
         return;
     }
@@ -62,93 +61,38 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // Fungsi untuk memuat konten halaman berdasarkan rute
-    function loadPage() {
-        const path = window.location.pathname;
-        let content = '';
+    // Muat mata uang saat halaman dimuat
+    loadCurrencies();
 
-        switch (path) {
-            case '/':
-                content = `
-                    <h1 class="text-4xl font-bold text-center text-yellow-400 mb-8">Real-Time Currency Converter</h1>
-                    <div class="max-w-md mx-auto bg-purple-800 p-6 rounded-lg shadow-lg">
-                        <form id="converter-form">
-                            <div class="mb-4">
-                                <label for="amount" class="block text-yellow-300">Amount</label>
-                                <input type="number" id="amount" class="w-full p-2 rounded bg-gray-800 text-white border border-gray-600" placeholder="Enter amount" required min="0" step="0.01">
-                            </div>
-                            <div class="mb-4">
-                                <label for="from-currency" class="block text-yellow-300">From</label>
-                                <select id="from-currency" class="w-full p-2 rounded bg-gray-800 text-white border border-gray-600" required>
-                                    <option value="">Select Currency</option>
-                                </select>
-                            </div>
-                            <div class="mb-4">
-                                <label for="to-currency" class="block text-yellow-300">To</label>
-                                <select id="to-currency" class="w-full p-2 rounded bg-gray-800 text-white border border-gray-600" required>
-                                    <option value="">Select Currency</option>
-                                </select>
-                            </div>
-                            <button type="submit" class="w-full bg-yellow-400 text-gray-900 py-2 rounded hover:bg-yellow-500 transition duration-200">Convert</button>
-                        </form>
-                        <div id="result" class="mt-4 text-center text-yellow-300"></div>
-                    </div>
-                `;
-                break;
-            case '/about':
-                content = '<h1 class="text-4xl font-bold text-center text-yellow-400 mb-8">About Us</h1><p class="text-center">This is the about page. Add your content here!</p>';
-                break;
-            case '/terms':
-                content = '<h1 class="text-4xl font-bold text-center text-yellow-400 mb-8">Terms of Service</h1><p class="text-center">This is the terms page. Add your terms here!</p>';
-                break;
-            case '/privacy':
-                content = '<h1 class="text-4xl font-bold text-center text-yellow-400 mb-8">Privacy Policy</h1><p class="text-center">This is the privacy page. Add your policy here!</p>';
-                break;
-            case '/blog':
-                content = '<h1 class="text-4xl font-bold text-center text-yellow-400 mb-8">Blog</h1><p class="text-center">This is the blog page. Add your blog posts here!</p>';
-                break;
-            default:
-                content = '<h1 class="text-4xl font-bold text-center text-yellow-400 mb-8">Page Not Found</h1><p class="text-center">The page you are looking for does not exist.</p>';
+    // Handle form submission untuk konversi
+    converterForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const amount = document.getElementById('amount').value;
+        const from = fromCurrency.value;
+        const to = toCurrency.value;
+
+        if (!amount || !from || !to) {
+            resultDiv.innerHTML = 'Please fill in all fields.';
+            return;
         }
-        contentDiv.innerHTML = content;
 
-        // Reload currencies and form if on home page
-        if (path === '/') {
-            loadCurrencies();
-            converterForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const amount = document.getElementById('amount').value;
-                const from = fromCurrency.value;
-                const to = toCurrency.value;
-
-                if (!amount || !from || !to) {
-                    resultDiv.innerHTML = 'Please fill in all fields.';
-                    return;
-                }
-
-                try {
-                    const response = await fetch(`https://api.frankfurter.app/latest?amount=${amount}&from=${from}&to=${to}`, {
-                        method: 'GET',
-                        mode: 'cors',
-                        cache: 'no-cache'
-                    });
-                    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-                    const data = await response.json();
-                    console.log('API Response (conversion):', data);
-                    if (data.rates && data.rates[to]) {
-                        resultDiv.innerHTML = `${amount} ${from} = ${data.rates[to].toFixed(2)} ${to}`;
-                    } else {
-                        resultDiv.innerHTML = 'Conversion failed. Check if currencies are valid.';
-                    }
-                } catch (error) {
-                    console.error('Error converting currency:', error);
-                    resultDiv.innerHTML = `Error: ${error.message}. Check console for details.`;
-                }
+        try {
+            const response = await fetch(`https://api.frankfurter.app/latest?amount=${amount}&from=${from}&to=${to}`, {
+                method: 'GET',
+                mode: 'cors',
+                cache: 'no-cache'
             });
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+            const data = await response.json();
+            console.log('API Response (conversion):', data);
+            if (data.rates && data.rates[to]) {
+                resultDiv.innerHTML = `${amount} ${from} = ${data.rates[to].toFixed(2)} ${to}`;
+            } else {
+                resultDiv.innerHTML = 'Conversion failed. Check if currencies are valid.';
+            }
+        } catch (error) {
+            console.error('Error converting currency:', error);
+            resultDiv.innerHTML = `Error: ${error.message}. Check console for details.`;
         }
-    }
-
-    // Load page on initial load and navigation
-    window.addEventListener('popstate', loadPage);
-    loadPage();
+    });
 });
