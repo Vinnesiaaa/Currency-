@@ -61,22 +61,19 @@
         <div class="max-w-md mx-auto bg-purple-800 p-6 rounded-lg shadow-lg">
             <p class="text-sm text-gray-400 mb-4 text-center">Enter amount and select currencies to convert.</p>
             <form id="converter-form">
-                <div class="mb-4 relative">
+                <div class="mb-4">
                     <label for="amount" class="block text-yellow-300">Amount</label>
-                    <div class="flex items-center">
-                        <input type="text" id="amount" class="w-full p-3 rounded-l-lg bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all duration-300 amount-input" placeholder="Enter amount (e.g., 10.000)" required>
-                        <span class="bg-gray-700 text-yellow-300 p-3 rounded-r-lg border border-l-0 border-gray-600">$</span>
-                    </div>
+                    <input type="number" id="amount" class="w-full p-2 rounded bg-gray-800 text-white border border-gray-600" placeholder="Enter amount" required min="0" step="0.01">
                 </div>
                 <div class="mb-4">
                     <label for="from-currency" class="block text-yellow-300">From</label>
-                    <select id="from-currency" class="w-full p-2 rounded bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all duration-300" required>
+                    <select id="from-currency" class="w-full p-2 rounded bg-gray-800 text-white border border-gray-600" required>
                         <option value="">Select Currency</option>
                     </select>
                 </div>
                 <div class="mb-4">
                     <label for="to-currency" class="block text-yellow-300">To</label>
-                    <select id="to-currency" class="w-full p-2 rounded bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all duration-300" required>
+                    <select id="to-currency" class="w-full p-2 rounded bg-gray-800 text-white border border-gray-600" required>
                         <option value="">Select Currency</option>
                     </select>
                 </div>
